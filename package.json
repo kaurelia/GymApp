@@ -1,0 +1,8 @@
+{
+  "name": "gym-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kaurelia/IoT-adventure.git",
+  "author": "Aurelia Korbela <aurelka2000@gmail.com>",
+  "license": "MIT"
+}

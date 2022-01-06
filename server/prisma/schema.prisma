@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://root:postgres@localhost:5432/events?schema=public"
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String  @db.VarChar(100)
+  surname  String  @db.VarChar(100)
+  email    String  @unique @db.VarChar(255)
+  password String  @db.VarChar(512)
+  events   Event[]
+  role     Role[]
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(100)
+  fromDate    DateTime
+  toDate      DateTime
+  participant User     @relation(fields: [id], references: [id])
+
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @db.VarChar(100)
+  owner User   @relation(fields: [id], references: [id])
+}
