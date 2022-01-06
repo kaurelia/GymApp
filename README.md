@@ -1,1 +1,1 @@
-# IoT-adventure
+# Gym App
