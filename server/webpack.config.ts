@@ -1,8 +1,19 @@
 import { join } from "path";
+import nodeExternals from "webpack-node-externals";
+import packageJson from "./package.json";
 
 const setUpConfig = () => {
   return {
     target: "node",
+    externals: [
+      nodeExternals({
+        allowlist: [
+          ...Object.keys(packageJson.dependencies).filter((name) => {
+            return name !== "@prisma/client";
+          }),
+        ],
+      }),
+    ],
     entry: join(__dirname, "src", "app.ts"),
     mode: "production",
     module: {

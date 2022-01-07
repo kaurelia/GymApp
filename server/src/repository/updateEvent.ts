@@ -1,14 +1,14 @@
 import { database } from "~root/app";
 import ExtendedPrismaEvent from "~root/types/extendedPrismaEvent";
 
-const updateEventRepo = ({
+const updateEventRepo = async ({
   eventId,
   extendedPrismaEvent,
 }: {
   eventId: number;
   extendedPrismaEvent: Partial<Omit<ExtendedPrismaEvent, "participantId">>;
 }) => {
-  database.event.update({
+  await database.event.update({
     where: {
       id: eventId,
     },

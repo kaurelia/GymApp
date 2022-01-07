@@ -1,12 +1,12 @@
 import { database } from "~root/app";
 import ExtendedPrismaEvent from "~root/types/extendedPrismaEvent";
-const addEventRepo = ({
+const addEventRepo = async ({
   name,
   fromDate,
   toDate,
   participantId,
 }: ExtendedPrismaEvent) => {
-  database.event.create({
+  await database.event.create({
     data: {
       name,
       fromDate,
