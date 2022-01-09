@@ -4,15 +4,15 @@ const addEventRepo = async ({
   name,
   fromDate,
   toDate,
-  participantId,
+  ownerId,
 }: ExtendedPrismaEvent) => {
   await database.event.create({
     data: {
       name,
       fromDate,
       toDate,
-      //   participantId:participantId
-      participant: { connect: { id: participantId } },
+      ownerId: ownerId,
+      // ownerId: { connect: { id: ownerId } },
     },
   });
 };

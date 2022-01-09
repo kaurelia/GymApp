@@ -11,7 +11,7 @@ const eventValidator = (minDate: Date) => {
       .required("Date required")
       .min(minDate, "Date can't be past date")
       .typeError("Date must be a date"),
-    participantId: yup
+    ownerId: yup
       .number()
       .required("Participant id required")
       .typeError("Participant id must be number"),
