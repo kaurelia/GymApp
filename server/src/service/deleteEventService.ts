@@ -1,18 +1,23 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import deleteEvent from "~root/repository/deleteEvent";
 import { ValidationError } from "yup";
 import deleteEventValidator from "~root/validation/deleteEventValidator";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 
-type EventDelete = {
-  eventId: number;
-};
-const deleteEventService = async (request: Request, response: Response) => {
-  const { eventId }: EventDelete = request.body;
-  deleteEvent(eventId);
+type DeleteEventRequest = Request & { params: { eventId: string } };
 
+const deleteEventService = async (
+  request: DeleteEventRequest,
+  response: Response,
+) => {
+  const {
+    params: { eventId },
+  }: DeleteEventRequest = request;
+  let eventIdNumber: number;
   try {
+    eventIdNumber = parseInt(eventId);
     await deleteEventValidator().validate({
-      eventId,
+      eventIdNumber,
     });
   } catch (error) {
     if (error instanceof ValidationError) {
@@ -28,12 +33,18 @@ const deleteEventService = async (request: Request, response: Response) => {
     return;
   }
   try {
-    await deleteEvent(eventId);
+    await deleteEvent(eventIdNumber);
   } catch (error) {
-    console.log(error);
-    response.header("application/json").sendStatus(500);
-    return;
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return response
+          .header("application/json")
+          .status(200)
+          .json({ msg: "Nie istnieje taki event" });
+      }
+    }
+    return response.header("application/json").sendStatus(500);
   }
-  response.header("application/json").status(201).json({ msg: "Success" });
+  response.header("application/json").status(200).json({ msg: "Success" });
 };
 export default deleteEventService;

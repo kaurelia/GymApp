@@ -15,9 +15,16 @@ const setUpConfig = () => {
       }),
     ],
     entry: join(__dirname, "src", "app.ts"),
+    devtool: "source-map",
     mode: "production",
     module: {
       rules: [
+        {
+          test: /\.(js)$/,
+          enforce: "pre",
+          exclude: /(node_modules)/,
+          use: ["source-map-loader"],
+        },
         {
           test: /\.(ts)$/,
           include: join(__dirname, "src"),

@@ -14,7 +14,6 @@ const addEventService = async (request: Request, response: Response) => {
   }: ExtendedPrismaEvent = request.body;
   let fromDate: Date;
   let toDate: Date;
-
   try {
     fromDate = parseISO(fromDateAsString as string);
     toDate = parseISO(toDateAsString as string);
