@@ -1,3 +1,4 @@
+import { EventStatus } from "@prisma/client";
 import { database } from "~root/app";
 import ExtendedPrismaEvent from "~root/types/extendedPrismaEvent";
 const addEventRepo = async ({
@@ -5,13 +6,14 @@ const addEventRepo = async ({
   fromDate,
   toDate,
   ownerId,
-}: ExtendedPrismaEvent) => {
+}: Omit<ExtendedPrismaEvent, "eventStatus">) => {
   await database.event.create({
     data: {
       name,
       fromDate,
       toDate,
       ownerId: ownerId,
+      eventStatus: EventStatus.IN_PROGRESS,
       // ownerId: { connect: { id: ownerId } },
     },
   });

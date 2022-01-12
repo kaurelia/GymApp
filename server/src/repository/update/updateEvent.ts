@@ -3,17 +3,16 @@ import ExtendedPrismaEvent from "~root/types/extendedPrismaEvent";
 
 const updateEventRepo = async ({
   eventId,
-  extendedPrismaEvent,
-}: {
-  eventId: number;
-  extendedPrismaEvent: Partial<Omit<ExtendedPrismaEvent, "participantId">>;
-}) => {
-  await database.event.update({
+  ownerId,
+  ...rest
+}: Partial<ExtendedPrismaEvent> & { eventId: number; ownerId: number }) => {
+  await database.event.updateMany({
     where: {
       id: eventId,
+      ownerId: ownerId,
     },
     data: {
-      ...extendedPrismaEvent,
+      ...rest,
     },
   });
 };

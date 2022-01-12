@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import ExtendedPrismaEvent from "~root/types/extendedPrismaEvent";
 import eventValidator from "~root/validation/eventValidator";
 import { ValidationError } from "yup";
-import addEventRepo from "~root/repository/addEvent";
+import addEventRepo from "~root/repository/create/addEvent";
 import { parseISO } from "date-fns";
 
 const addEventService = async (request: Request, response: Response) => {
@@ -11,18 +11,21 @@ const addEventService = async (request: Request, response: Response) => {
     fromDate: fromDateAsString,
     toDate: toDateAsString,
     ownerId,
-  }: ExtendedPrismaEvent = request.body;
+  }: Omit<ExtendedPrismaEvent, "eventStatus"> = request.body;
   let fromDate: Date;
   let toDate: Date;
   try {
     fromDate = parseISO(fromDateAsString as string);
     toDate = parseISO(toDateAsString as string);
-    await eventValidator(new Date()).validate({
-      name,
-      fromDate,
-      toDate,
-      ownerId,
-    });
+    await eventValidator(new Date()).validate(
+      {
+        name,
+        fromDate,
+        toDate,
+        ownerId,
+      },
+      { abortEarly: false, strict: true },
+    );
   } catch (error) {
     if (error instanceof ValidationError) {
       response

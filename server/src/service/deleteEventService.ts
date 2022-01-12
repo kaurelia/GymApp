@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import deleteEvent from "~root/repository/deleteEvent";
+import deleteEvent from "~root/repository/delete/deleteEvent";
 import { ValidationError } from "yup";
 import deleteEventValidator from "~root/validation/deleteEventValidator";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
@@ -16,9 +16,12 @@ const deleteEventService = async (
   let eventIdNumber: number;
   try {
     eventIdNumber = parseInt(eventId);
-    await deleteEventValidator().validate({
-      eventIdNumber,
-    });
+    await deleteEventValidator().validate(
+      {
+        eventIdNumber,
+      },
+      { abortEarly: false, strict: true },
+    );
   } catch (error) {
     if (error instanceof ValidationError) {
       response
@@ -40,7 +43,7 @@ const deleteEventService = async (
         return response
           .header("application/json")
           .status(200)
-          .json({ msg: "Nie istnieje taki event" });
+          .json({ error: "Nie istnieje taki event" });
       }
     }
     return response.header("application/json").sendStatus(500);

@@ -19,14 +19,14 @@ model User {
 }
 
 model Event {
-  id       Int      @id @default(autoincrement())
-  name     String   @db.VarChar(100)
-  fromDate DateTime
-  toDate   DateTime
-  owner    User     @relation(fields: [ownerId], references: [id])
-  ownerId  Int
-
-  users UserEvent[]
+  id          Int          @id @default(autoincrement())
+  name        String       @db.VarChar(100)
+  fromDate    DateTime
+  toDate      DateTime
+  owner       User         @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+  users       UserEvent[]
+  eventStatus EventStatus?
 }
 
 model UserEvent {
@@ -42,4 +42,9 @@ model Role {
   id    Int    @id @default(autoincrement())
   name  String @db.VarChar(100)
   owner User   @relation(fields: [id], references: [id])
+}
+
+enum EventStatus {
+  IN_PROGRESS
+  CANCELLED
 }

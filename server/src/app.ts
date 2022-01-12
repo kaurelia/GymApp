@@ -5,6 +5,7 @@ import cors from "cors";
 import addEventService from "./service/addEventService";
 import deleteEventService from "./service/deleteEventService";
 import signUpEventService from "./service/signUpEventService";
+import updateEventService from "./service/updateEventService";
 
 export const database = new PrismaClient();
 const app = express();
@@ -15,5 +16,5 @@ app.use(cors());
 app.post("/event", addEventService);
 app.delete("/event/:eventId", deleteEventService);
 app.post("/event/sign-up", signUpEventService);
-
+app.put("/event", updateEventService);
 export const server = app.listen(port);
