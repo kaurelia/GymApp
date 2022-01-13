@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import deleteEvent from "~root/repository/delete/deleteEvent";
 import { ValidationError } from "yup";
 import deleteEventValidator from "~root/validation/deleteEventValidator";
@@ -9,7 +9,7 @@ type DeleteEventRequest = Request & { params: { eventId: string } };
 const deleteEventService = async (
   request: DeleteEventRequest,
   response: Response,
-) => {
+): Promise<void> => {
   const {
     params: { eventId },
   }: DeleteEventRequest = request;
@@ -40,13 +40,15 @@ const deleteEventService = async (
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
-        return response
+        response
           .header("application/json")
           .status(200)
           .json({ error: "Nie istnieje taki event" });
+        return;
       }
     }
-    return response.header("application/json").sendStatus(500);
+    response.header("application/json").sendStatus(500);
+    return;
   }
   response.header("application/json").status(200).json({ msg: "Success" });
 };

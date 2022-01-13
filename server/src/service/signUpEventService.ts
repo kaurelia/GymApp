@@ -5,7 +5,10 @@ import { UserEvent } from "@prisma/client";
 import { ValidationError } from "yup";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 
-const signUpEventService = async (request: Request, response: Response) => {
+const signUpEventService = async (
+  request: Request,
+  response: Response,
+): Promise<void> => {
   let { userId, eventId }: UserEvent = request.body;
   try {
     await signUpToEventValidator().validate(
@@ -30,18 +33,20 @@ const signUpEventService = async (request: Request, response: Response) => {
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
-        return response
+        response
           .header("application/json")
           .status(200)
           .json({ error: "Użytkownik został ju wcześniej zapisany" });
+        return;
       }
     }
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
-        return response
+        response
           .header("application/json")
           .status(200)
           .json({ error: "Nie istnieje taki użytkownik lub wydarzenie" });
+        return;
       }
     }
     console.log(error);

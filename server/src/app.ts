@@ -8,7 +8,7 @@ import signUpEventService from "./service/signUpEventService";
 import updateEventService from "./service/updateEventService";
 
 export const database = new PrismaClient();
-const app = express();
+export const app = express();
 const port = 5001;
 
 app.use(jsonBodyParser());

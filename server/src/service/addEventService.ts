@@ -5,7 +5,10 @@ import { ValidationError } from "yup";
 import addEventRepo from "~root/repository/create/addEvent";
 import { parseISO } from "date-fns";
 
-const addEventService = async (request: Request, response: Response) => {
+const addEventService = async (
+  request: Request,
+  response: Response,
+): Promise<void> => {
   const {
     name,
     fromDate: fromDateAsString,
