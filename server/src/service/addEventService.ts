@@ -4,6 +4,7 @@ import eventValidator from "~root/validation/eventValidator";
 import { ValidationError } from "yup";
 import addEventRepo from "~root/repository/create/addEvent";
 import { parseISO } from "date-fns";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 
 const addEventService = async (
   request: Request,
@@ -45,6 +46,15 @@ const addEventService = async (
   try {
     await addEventRepo({ name, fromDate, toDate, ownerId });
   } catch (error) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2003") {
+        response
+          .header("application/json")
+          .status(400)
+          .json({ error: "Nie istnieje taki owner id" });
+        return;
+      }
+    }
     console.log(error);
     response.header("application/json").sendStatus(500);
     return;

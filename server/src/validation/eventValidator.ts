@@ -13,8 +13,8 @@ const eventValidator = (minDate: Date) => {
       .typeError("Date must be a date"),
     ownerId: yup
       .number()
-      .required("Participant id required")
-      .typeError("Participant id must be number"),
+      .required("Owner id required")
+      .typeError("Owner id must be number"),
     toDate: yup
       .date()
       .required("Date required")

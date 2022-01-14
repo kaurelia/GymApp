@@ -35,7 +35,7 @@ const signUpEventService = async (
       if (error.code === "P2002") {
         response
           .header("application/json")
-          .status(200)
+          .status(409)
           .json({ error: "Użytkownik został ju wcześniej zapisany" });
         return;
       }
@@ -44,7 +44,7 @@ const signUpEventService = async (
       if (error.code === "P2025") {
         response
           .header("application/json")
-          .status(200)
+          .status(404)
           .json({ error: "Nie istnieje taki użytkownik lub wydarzenie" });
         return;
       }

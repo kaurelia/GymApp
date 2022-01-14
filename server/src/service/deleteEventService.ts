@@ -42,7 +42,7 @@ const deleteEventService = async (
       if (error.code === "P2025") {
         response
           .header("application/json")
-          .status(200)
+          .status(404)
           .json({ error: "Nie istnieje taki event" });
         return;
       }
