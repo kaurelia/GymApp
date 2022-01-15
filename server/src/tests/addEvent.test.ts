@@ -16,7 +16,7 @@ const badEvent = {
   toDate: 2022,
   ownerId: 1,
 };
-describe("Sample Test", () => {
+describe("Event test", () => {
   it("add event with success by REST", (done) => {
     request(app)
       .post("/event")
