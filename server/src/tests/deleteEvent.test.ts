@@ -1,9 +1,13 @@
-import { app } from "~root/app";
+import { app, server } from "~root/app";
 import request from "supertest";
+
+afterAll(() => {
+  server.close();
+});
 
 describe("Event test", () => {
   it("delete event with success by REST", (done) => {
-    const eventId = 16;
+    const eventId = 19;
     request(app)
       .delete(`/event/${eventId}`)
       .set("Accept", "application/json")

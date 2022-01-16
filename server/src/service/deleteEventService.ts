@@ -23,6 +23,8 @@ const deleteEventService = async (
       { abortEarly: false, strict: true },
     );
   } catch (error) {
+    console.log(error);
+
     if (error instanceof ValidationError) {
       response
         .header("application/json")
@@ -30,7 +32,6 @@ const deleteEventService = async (
         .send({ error: error.errors });
       return;
     }
-    console.log(error);
 
     response.header("application/json").sendStatus(500);
     return;
@@ -38,6 +39,8 @@ const deleteEventService = async (
   try {
     await deleteEvent(eventIdNumber);
   } catch (error) {
+    console.log(error);
+
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
         response

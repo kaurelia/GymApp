@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/main.js",
-    "test": "jest",
-    "build": "rm -rf dist && webpack"
+    "test": "jest --runInBand",
+    "build": "rm -rf dist && tsc && webpack"
   },
   "dependencies": {
     "@prisma/client": "^3.7.0",
